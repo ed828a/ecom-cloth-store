@@ -2,7 +2,7 @@ import React from 'react';
 import './menu-item.scss';
 import {withRouter} from 'react-router-dom';
 
-const MenuItem = ({ title, image, size, history, linkUrl, match }) => {
+const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => {
     return (
         <div
             className={`${size} menu-item`}
@@ -10,7 +10,7 @@ const MenuItem = ({ title, image, size, history, linkUrl, match }) => {
         >
             <div
                 className="image-background"
-                style={{ backgroundImage: `url(${image})` }}
+                style={{ backgroundImage: `url(${imageUrl})` }}
             />
             <div className='content'>
                 <h1 className='title'>{title.toUpperCase()}</h1>
