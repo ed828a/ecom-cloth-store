@@ -5,7 +5,7 @@ import { Switch, Route } from 'react-router-dom'
 import ShopPage from './pages/shoppage/ShopPage';
 import Header from './component/header/Header';
 import SignInSignUp from './component/sign-in-sign-up/SignInSignUp';
-import { auth } from './firebase/firebase.utils'
+import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
 
 export class App extends Component {
@@ -20,17 +20,37 @@ export class App extends Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      this.setState({currentUser: user});
-      console.log("user: ", user);
-    })
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
+      // this.setState({ currentUser: userAuth });
+      if (userAuth) {
+        const userRef = createUserProfileDocument(userAuth);
+
+        // update currentUser, .data() does't get id propery.
+        (await userRef).onSnapshot(snapShot => {
+          this.setState({
+            currentUser: {
+              id: snapShot.id,
+              ...snapShot.data()
+            }
+          }, () => {
+            // console.log('currentUser:', this.state.currentUser);
+          });
+          // console.log('currentUser:', this.state.currentUser);
+        });
+        
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
+
+      console.log("user: ", userAuth);
+    });
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
 
-  render() { 
+  render() {
     return (
       <div className="App">
         <Header currentUser={this.state.currentUser} />
