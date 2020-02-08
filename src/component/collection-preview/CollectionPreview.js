@@ -11,8 +11,8 @@ export default function CollectionPreview({ title, items }) {
                 {
                     items
                         .filter((item, index) => index < 4) // because this method runs everytime when Collection render / re-render, so if the array is big, this will cause the proformance issue.
-                        .map(({id, ...restItemProps}) => (
-                            <CollectionItem key={id} {...restItemProps} />
+                        .map((item) => (
+                            <CollectionItem key={item.id} item={item} />
                         ))
                 }
             </div>
