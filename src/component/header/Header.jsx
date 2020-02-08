@@ -6,8 +6,10 @@ import { ReactComponent as Logo } from "../../assets/logo.svg"; // this is a spe
 import { auth } from "../../firebase/firebase.utils";
 
 import { connect} from 'react-redux'; // connect: high order component that lets use modify our component to have access the things related to redux. conect take 2 functions as parameters (the second one is optional), and return another high order component which wrap our component.
+import CartIcon from "../cart-icon/CartIcon";
+import CartDropdown from "../cart-dropdown/CartDropdown";
 
-function Header({ currentUser }) {
+function Header({ currentUser, hidden }) {
     return (
         <div className="header">
             <Link to="/" className="logo-container">
@@ -28,8 +30,10 @@ function Header({ currentUser }) {
                     <Link className="option" to="/signin">
                         sign in
                     </Link>
-                )}
+                )}                
+                <CartIcon /> 
             </div>
+            { hidden ? null : <CartDropdown />}
         </div>
     );
 }
@@ -38,8 +42,11 @@ function Header({ currentUser }) {
 // as the function name indicates that this function map state to props, and return props
 // this props will be passed to our component wrapped in the last parentheses.
 // input state is root-reducer
-const mapStateToProps = (state) => ({
-    currentUser: state.user.currentUser
-});
+const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => ({currentUser, hidden});
+// which means:
+// ({
+//     currentUser: currentUser,
+//     hidden: hidden    
+// });
 
 export default connect(mapStateToProps)(Header);
