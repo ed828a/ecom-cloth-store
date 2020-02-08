@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "./sign-in.scss";
 import FormInput from "../form-input/FormInput";
 import CustomButton from "../custom-button/CustomButton";
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { auth, signInWithGoogle } from "../../firebase/firebase.utils";
 
 export class SignIn extends Component {
     constructor(props) {
@@ -14,17 +14,38 @@ export class SignIn extends Component {
         };
     }
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
+        console.log("eventTarget: ", event.target.textContent);
 
-        this.setState({
-            email: "",
-            password: ""
-        });
+        const { email, password } = this.state;
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 charactors");
+            return;
+        } else if (!email.includes("@")) {
+            alert("Email is invalide");
+            return;
+        }
+
+        try {
+            const { user } = await auth.signInWithEmailAndPassword(
+                email,
+                password
+            );                      
+
+            // clear email and password
+            this.setState({
+                email: "",
+                password: ""
+            });
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     handleChanges = event => {
-        console.log(event);
+        // console.log(event);
         const { value, name } = event.target;
         this.setState({ [name]: value });
     };
@@ -54,10 +75,12 @@ export class SignIn extends Component {
                     <div className="buttons">
                         <CustomButton type="submit">sign in</CustomButton>
                         <CustomButton
+                            type="button"
                             onClick={signInWithGoogle}
                             isGoogleSignIn={true}
                         >
-                            {" "}sign in with Google{" "}
+                            {" "}
+                            sign in with Google{" "}
                         </CustomButton>
                     </div>
                 </form>

@@ -5,6 +5,8 @@ import { ReactComponent as Logo } from "../../assets/logo.svg"; // this is a spe
 
 import { auth } from "../../firebase/firebase.utils";
 
+import { connect} from 'react-redux'; // connect: high order component that lets use modify our component to have access the things related to redux. conect take 2 functions as parameters (the second one is optional), and return another high order component which wrap our component.
+
 function Header({ currentUser }) {
     return (
         <div className="header">
@@ -32,4 +34,12 @@ function Header({ currentUser }) {
     );
 }
 
-export default Header;
+// this naming can be anything but mapStateToProps is standard with redux codebases
+// as the function name indicates that this function map state to props, and return props
+// this props will be passed to our component wrapped in the last parentheses.
+// input state is root-reducer
+const mapStateToProps = (state) => ({
+    currentUser: state.user.currentUser
+});
+
+export default connect(mapStateToProps)(Header);

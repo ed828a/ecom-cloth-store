@@ -7,39 +7,31 @@ import Header from './component/header/Header';
 import SignInSignUp from './component/sign-in-sign-up/SignInSignUp';
 import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
+import { connect } from 'react-redux';
+import { setCurrentUser } from './redux/user/user.action'
+
 
 export class App extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      currentUser: null
-    }
-  }
-
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    const { setCurrentUser } = this.props;
+
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-      // this.setState({ currentUser: userAuth });
+
       if (userAuth) {
         const userRef = createUserProfileDocument(userAuth);
 
         // update currentUser, .data() does't get id propery.
         (await userRef).onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
-          }, () => {
-            // console.log('currentUser:', this.state.currentUser);
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
           });
-          // console.log('currentUser:', this.state.currentUser);
         });
-        
+
       } else {
-        this.setState({ currentUser: userAuth });
+        setCurrentUser(userAuth);
       }
 
       console.log("user: ", userAuth);
@@ -53,7 +45,7 @@ export class App extends Component {
   render() {
     return (
       <div className="App">
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch >
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
@@ -64,20 +56,10 @@ export class App extends Component {
   }
 }
 
-export default App
+// dispatch function is a way for redux to know that whatever object passing in is going to be an action object that redux will passing to every reducer.
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user))
+});
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <Header />
-//       <Switch >
-//         <Route exact path='/' component={HomePage} />
-//         <Route exact path='/shop' component={ShopPage} />
-//         <Route path='/signin' component={SignInSignUp} />
-//       </Switch>
+export default connect(null, mapDispatchToProps)(App);
 
-//     </div>
-//   );
-// }
-
-// export default App;
