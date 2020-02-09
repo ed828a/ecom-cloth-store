@@ -22,7 +22,14 @@
 
     .quantity {
         width: 23%;
-        padding-left: 20px;
+        display: flex;
+
+        .value{
+            margin: 0 10px;
+        }
+        .arrow{
+            cursor: pointer;
+        }
     }
 
     .remove-button{
