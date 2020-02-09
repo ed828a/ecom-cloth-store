@@ -33,6 +33,7 @@ export class SignIn extends Component {
                 email,
                 password
             );                      
+            if(user) console.log('sign-in user',user);
 
             // clear email and password
             this.setState({
