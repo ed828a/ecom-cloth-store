@@ -10,3 +10,12 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
 
     return [...cartItems, {...cartItemToAdd, quantity: 1}];
 };
+
+export const removeItemFromCart = (cartItems, cartItemToRemove) => {
+    
+    const index = cartItems.indexOf(cartItemToRemove);
+
+    if(index != -1) cartItems.splice(index, 1);
+
+    return [...cartItems];    
+}

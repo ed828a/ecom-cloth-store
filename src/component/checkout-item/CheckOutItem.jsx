@@ -1,8 +1,14 @@
 import './checkout-item.scss';
 
-import React from 'react'
+import React from 'react';
+import { connect } from 'react-redux';
+import { clearItemFromCart } from '../../redux/cart/cart.action';
 
-function CheckOutItem({cartItem: {imageUrl, name, quantity, price}}) {
+
+function CheckOutItem({ cartItem, removeItemFromCart }) {
+    
+    const {imageUrl, name, quantity, price} = cartItem;
+
     return (
         <div className='checkout-item'>
             <div className="image-container">
@@ -11,10 +17,15 @@ function CheckOutItem({cartItem: {imageUrl, name, quantity, price}}) {
             <span className="name">{name}</span>
             <span className="quantity">{quantity}</span>
             <span className="price">{price}</span>
-            <div className="remove-button"> &#10005; </div>
-              
+            <div className="remove-button" onClick={() => removeItemFromCart(cartItem)}> &#10005; </div>
+               
         </div>
     )
 }
 
-export default CheckOutItem
+const mapDispatchToPorps = dispatch => ({
+    removeItemFromCart: (item) => dispatch(clearItemFromCart(item))
+});
+
+export default connect(null, mapDispatchToPorps)(CheckOutItem);
+ 
