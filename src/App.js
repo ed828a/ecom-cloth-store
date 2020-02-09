@@ -9,6 +9,8 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils'
 
 import { connect } from 'react-redux';
 import { setCurrentUser } from './redux/user/user.action'
+import { selectCurrentUser } from './redux/user/user.selectors';
+import { createStructuredSelector } from 'reselect'
 
 
 export class App extends Component {
@@ -55,8 +57,8 @@ export class App extends Component {
   }
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+const mapStateToProps = createStructuredSelector ({
+  currentUser: selectCurrentUser
 })
 
 // dispatch function is a way for redux to know that whatever object passing in is going to be an action object that redux will passing to every reducer.

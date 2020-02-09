@@ -8,6 +8,9 @@ import { auth } from "../../firebase/firebase.utils";
 import { connect} from 'react-redux'; // connect: high order component that lets use modify our component to have access the things related to redux. conect take 2 functions as parameters (the second one is optional), and return another high order component which wrap our component.
 import CartIcon from "../cart-icon/CartIcon";
 import CartDropdown from "../cart-dropdown/CartDropdown";
+import { selectCurrentUser } from '../../redux/user/user.selectors';
+import { selectHidden } from '../../redux/cart/cart.selectors';
+import { createStructuredSelector } from 'reselect';
 
 function Header({ currentUser, hidden }) {
     return (
@@ -42,11 +45,19 @@ function Header({ currentUser, hidden }) {
 // as the function name indicates that this function map state to props, and return props
 // this props will be passed to our component wrapped in the last parentheses.
 // input state is root-reducer
-const mapStateToProps = ({user: {currentUser}, cart: {hidden}}) => ({currentUser, hidden});
+// const mapStateToProps = (state) => ({
+//     currentUser: selectCurrentUser(state),
+//     hidden: selectHidden(state)
+// });
 // which means:
 // ({
 //     currentUser: currentUser,
 //     hidden: hidden    
 // });
+
+const mapStateToProps = createStructuredSelector ({
+    currentUser: selectCurrentUser,
+    hidden: selectHidden
+});
 
 export default connect(mapStateToProps)(Header);
