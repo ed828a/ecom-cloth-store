@@ -12,6 +12,7 @@ import { setCurrentUser } from './redux/user/user.action'
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect'
 import CheckOut from './pages/checkoutpage/CheckOut';
+import CollectionPage from './pages/collection/CollectionPage';
 
 
 export class App extends Component {
@@ -36,7 +37,6 @@ export class App extends Component {
       } else {
         setCurrentUser(userAuth);
       }
-      // console.log("user: ", userAuth);
     });
   }
 
@@ -45,21 +45,26 @@ export class App extends Component {
   }
 
   render() {
+    const {match} = this.props;
+
     return (
       <div className="App">
         <Header />
         <Switch >
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
-          <Route exact path='/signin' render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInSignUp />)} />
+          <Route path='/shop/:collectionId' component={CollectionPage} />
           <Route exact paht='/checkout' component={CheckOut} />
+          <Route exact path='/signin'
+            render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInSignUp />)} />
+          
         </Switch>
       </div>
     )
   }
 }
 
-const mapStateToProps = createStructuredSelector ({
+const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
 })
 
