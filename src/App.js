@@ -1,42 +1,41 @@
-import React, { Component } from 'react'
-import './App.css';
-import HomePage from './pages/homepage/HomePage';
-import { Switch, Route, Redirect } from 'react-router-dom'
-import ShopPage from './pages/shoppage/ShopPage';
-import Header from './component/header/Header';
-import SignInSignUp from './component/sign-in-sign-up/SignInSignUp';
-import { auth, createUserProfileDocument } from './firebase/firebase.utils'
-
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user.action'
+import { createStructuredSelector } from 'reselect';
+
+import './App.css';
+
+import HomePage from './pages/homepage/homepage.component';
+import ShopPage from './pages/shop/shop.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
+import CheckoutPage from './pages/checkout/checkout.component';
+
+import Header from './components/header/header.component';
+
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+
+import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-import { createStructuredSelector } from 'reselect'
-import CheckOut from './pages/checkoutpage/CheckOut';
-import CollectionPage from './pages/collection/CollectionPage';
 
-
-export class App extends Component {
+class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
     const { setCurrentUser } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
-        const userRef = createUserProfileDocument(userAuth);
+        const userRef = await createUserProfileDocument(userAuth);
 
-        // update currentUser, .data() does't get id propery, snapshot has id property
-        (await userRef).onSnapshot(snapShot => {
+        userRef.onSnapshot(snapShot => {
           setCurrentUser({
             id: snapShot.id,
             ...snapShot.data()
           });
         });
-
-      } else {
-        setCurrentUser(userAuth);
       }
+
+      setCurrentUser(userAuth);
     });
   }
 
@@ -45,33 +44,39 @@ export class App extends Component {
   }
 
   render() {
-    const {match} = this.props;
-
     return (
-      <div className="App">
+      <div>
         <Header />
-        <Switch >
+        <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route exact path='/shop' component={ShopPage} />
-          <Route path='/shop/:collectionId' component={CollectionPage} />
-          <Route exact paht='/checkout' component={CheckOut} />
-          <Route exact path='/signin'
-            render={() => this.props.currentUser ? (<Redirect to='/' />) : (<SignInSignUp />)} />
-          
+          <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={CheckoutPage} />
+          <Route
+            exact
+            path='/signin'
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to='/' />
+              ) : (
+                <SignInAndSignUpPage />
+              )
+            }
+          />
         </Switch>
       </div>
-    )
+    );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser
-})
-
-// dispatch function is a way for redux to know that whatever object passing in is going to be an action object that redux will passing to every reducer.
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
 
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
