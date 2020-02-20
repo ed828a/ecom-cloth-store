@@ -6,6 +6,7 @@ import { Route, Swtich, Switch } from 'react-router-dom'
 import ErrorPage from './pages/errorpage/ErrorPage';
 import ShopPage from './pages/shoppage/shop.component';
 import Header from './component/header/header.component';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-sign-up.component';
 
 
 
@@ -19,6 +20,7 @@ export class App extends Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
+          <Route exact path='/signin' component={SignInAndSignUpPage} />
           <Route component={ErrorPage} />
         </Switch>
 

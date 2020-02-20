@@ -11,7 +11,7 @@ export class SignIn extends Component {
         this.state = {
             email: "",
             password: ""
-        };
+        }; 
     }
 
     handleSubmit = async event => {

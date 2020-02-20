@@ -28,7 +28,8 @@ $main-color: black;
       outline: none;
     }
 
-    &:focus ~ .form-input-label {
+    // Selects every .form-input-lable element that are preceded by a form-input:focus element
+    &:focus ~ .form-input-label { 
       @include shrinkLabel();
     }
   }
@@ -48,6 +49,7 @@ $main-color: black;
     transition: 300ms ease all;
     text-transform: capitalize;
 
+    // when there are some input, the label is shrinked.
     &.shrink {
       @include shrinkLabel();
     }
