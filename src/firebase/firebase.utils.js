@@ -31,9 +31,9 @@ const firebaseConfig = {
 //   // measurementId: "G-7SNP0LP9KW"
 // };
 
-
+// userAuth is just the user input in auth.onAuthStateChanged
 export const createUserProfileDocument = async (userAuth, addtionalData) => {
-  if (!userAuth) return;
+  if (!userAuth) return; // if user not sign in, exit 
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   // console.log('uid: ', userAuth.uid);
@@ -56,7 +56,7 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
   }
   
   // console.log("run to here");
-  return userRef; // in case we still use userRef to do other things.
+  return userRef; // in case we still use the userRef to do other things.
 }
 
 // Initialize Firebase

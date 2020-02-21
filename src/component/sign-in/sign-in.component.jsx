@@ -81,13 +81,14 @@ export class SignIn extends Component {
                         >
                             sign in
                         </CustomButton>
-                        
+
                         <CustomButton
                             type="text"
                             onClick={() => {
                                 this.setState({ isSignInClicked: false });
                                 signInWithGoogle();
                             }}
+                            isGoogleSignIn
                         >
                             sign in with google
                         </CustomButton>
