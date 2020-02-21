@@ -3,7 +3,7 @@ import "./sign-in.scss";
 import React, { Component } from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { signInWithGoogle, auth } from "../../firebase/firebase.utils";
 
 export class SignIn extends Component {
     constructor(props) {
@@ -16,10 +16,31 @@ export class SignIn extends Component {
         };
     }
 
-    handleSubmit = event => {
+    handleSubmit = async event => {
         event.preventDefault();
 
-        this.setState({ email: "", password: "" }); // reset form
+        const { email, password } = this.state;
+
+        if (password.length < 8) {
+            alert("Password must be at least 8 charactors");
+            return;
+        } 
+        
+        if (!email.includes("@")) {
+            alert("Email is invalide");
+            return;
+        }
+
+        try {
+            const returnObject = await auth.signInWithEmailAndPassword(email, password);
+            // console.log('returnObject: ', returnObject);
+
+            this.setState({ email: "", password: "" }); // reset form
+
+        } catch (error) {
+            console.error(error);            
+        }
+        
     };
 
     handleChange = event => {

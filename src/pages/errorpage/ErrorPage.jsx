@@ -3,7 +3,7 @@ import React from 'react';
 import Hero from '../../component/hero/Hero';
 import { Link } from 'react-router-dom';
 import Banner from '../../component/banner/Banner'
-import CustomButton from '../../component/custom-button/CustomButton';
+// import CustomButton from '../../component/custom-button/CustomButton';
 
 
 function ErrorPage() {

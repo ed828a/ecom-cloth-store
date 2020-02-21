@@ -39,12 +39,14 @@ export class App extends Component {
               }
             },
             () => {
-              console.log("currentUser: ", this.state.currentUser)
+              console.log("currentUser: ", this.state.currentUser);
             });
         });
       } else {
         // set currentUser to null
-        this.setState({currentUser: userAuth})
+        this.setState({currentUser: userAuth}, () => {
+          console.log("currentUser: ", this.state.currentUser);
+        });
       }
 
     });

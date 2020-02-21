@@ -34,9 +34,10 @@ const firebaseConfig = {
 // userAuth is just the user input in auth.onAuthStateChanged
 export const createUserProfileDocument = async (userAuth, addtionalData) => {
   if (!userAuth) return; // if user not sign in, exit 
+  console.log('userAuth: ', userAuth);
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
-  // console.log('uid: ', userAuth.uid);
+  // console.log('addtionalData: ', addtionalData);
  
   try {
     const snapShot = await userRef.get();
@@ -55,7 +56,6 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     console.log('firestore error when creating user: ', error.message);
   }
   
-  // console.log("run to here");
   return userRef; // in case we still use the userRef to do other things.
 }
 
