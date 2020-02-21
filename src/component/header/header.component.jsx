@@ -11,6 +11,9 @@ function Header({ currentUser }) {
             <Link className="logo-container" to="/">
                 <Logo className="logo" />
             </Link>
+            <div className="username">{
+                currentUser ? currentUser.displayName : "not sign in yet"
+            } </div>
             <div className="options">
                 <Link className="option" to="/shop">Shop</Link>
                 {
