@@ -11,7 +11,8 @@ export class SignIn extends Component {
 
         this.state = {
             email: "",
-            password: ""
+            password: "",
+            isSignInClicked: false
         };
     }
 
@@ -41,7 +42,7 @@ export class SignIn extends Component {
                         value={this.state.email}
                         onChange={this.handleChange}
                         label="email"
-                        required
+                        required={this.state.isSignInClicked ? true : false}
                     />
 
                     <FormInput
@@ -51,7 +52,7 @@ export class SignIn extends Component {
                         value={this.state.password}
                         onChange={this.handleChange}
                         label="password"
-                        required
+                        required={this.state.isSignInClicked ? true : false}
                     />
                     {/* <input
                         type="email"
@@ -72,8 +73,22 @@ export class SignIn extends Component {
                     />
                     <label htmlFor="password">password</label> */}
                     <div className="buttons">
-                        <CustomButton type="submit">sign in</CustomButton>
-                        <CustomButton onClick={signInWithGoogle}>
+                        <CustomButton
+                            type="submit"
+                            onClick={() =>
+                                this.setState({ isSignInClicked: true })
+                            }
+                        >
+                            sign in
+                        </CustomButton>
+                        
+                        <CustomButton
+                            type="text"
+                            onClick={() => {
+                                this.setState({ isSignInClicked: false });
+                                signInWithGoogle();
+                            }}
+                        >
                             sign in with google
                         </CustomButton>
                     </div>
