@@ -17,9 +17,12 @@ export class SignIn extends Component {
     }
 
     handleSubmit = async event => {
+
         event.preventDefault();
 
-        const { email, password } = this.state;
+        const { email, password, isSignInClicked } = this.state;
+
+        if(!isSignInClicked) return
 
         if (password.length < 8) {
             alert("Password must be at least 8 charactors");
@@ -32,7 +35,8 @@ export class SignIn extends Component {
         }
 
         try {
-            const returnObject = await auth.signInWithEmailAndPassword(email, password);
+            // const returnObject = 
+            await auth.signInWithEmailAndPassword(email, password);
             // console.log('returnObject: ', returnObject);
 
             this.setState({ email: "", password: "" }); // reset form

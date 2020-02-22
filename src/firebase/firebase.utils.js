@@ -34,7 +34,7 @@ const firebaseConfig = {
 // userAuth is just the user input in auth.onAuthStateChanged
 export const createUserProfileDocument = async (userAuth, addtionalData) => {
   if (!userAuth) return; // if user not sign in, exit 
-  console.log('userAuth: ', userAuth);
+  // console.log('userAuth: ', userAuth);
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   // console.log('addtionalData: ', addtionalData);
