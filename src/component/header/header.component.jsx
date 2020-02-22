@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 function Header(props) {
     console.log('props:', props);
     const {currentUser} = props;
-    
+
     currentUser ? console.log('displayName') : console.log('not sign in');
 
     return (
@@ -18,7 +18,7 @@ function Header(props) {
                 <Logo className="logo" />
             </Link>
             <div className="username">{
-                currentUser ? currentUser.displayName : "not sign in yet"
+                currentUser ? currentUser.displayName : "You are not signed in"
             } </div>
             <div className="options">
                 <Link className="option" to="/shop">Shop</Link>
