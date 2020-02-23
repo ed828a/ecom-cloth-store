@@ -17,6 +17,9 @@
         .header-block{
             text-transform: capitalize;
             width: 23%;
+            display: inline-flex;
+            justify-content: center;
+
             &:last-child{
                 width: 8%;
             }
