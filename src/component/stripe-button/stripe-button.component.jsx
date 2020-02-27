@@ -6,7 +6,7 @@ function StripeCheckoutButton({ price }) {
     // const publishableKey = process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
     const publishableKey = 'pk_test_SP84HXlGG6DAhu2Kd0GzxKrh00r9qB0g62';
 
-    console.log('publishableKey: ', publishableKey);
+    console.log('publishableKey: ', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
     const onToken = token => {
         console.log(token);
