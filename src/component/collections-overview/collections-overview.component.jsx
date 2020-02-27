@@ -9,6 +9,8 @@ import { selectCollectionsForPreview } from "../../redux/shop/shop.selectors";
 
 // Object.keys(An-Object) returns the array of keys of the object
 function CollectionsOverview({ collections }) {
+    console.log('collections.length: ', collections.length);
+
     return (
         <div className="collections-overview">
             {/* {Object.keys(collections)   

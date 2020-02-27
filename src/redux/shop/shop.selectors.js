@@ -18,5 +18,6 @@ export const selectCollectionsForPreview = createSelector(
     [selectCollections],
     collections => Object.keys(collections)
         .map(key => collections[key])
-        .filter((item, index) => index < 4)
+        
+        // .filter((item, index) => index < 4)
 )
