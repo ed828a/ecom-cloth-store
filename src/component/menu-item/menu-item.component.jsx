@@ -3,6 +3,7 @@ import React from "react";
 import { withRouter } from 'react-router-dom'
 
 function MenuItem({ title, imageUrl, size, linkUrl, history, match }) {
+    // console.log('linkUrl: ', `${match.url}${linkUrl}`);
     return (
         <div 
             className={`${size} menu-item`}

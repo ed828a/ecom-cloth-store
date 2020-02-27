@@ -13,7 +13,6 @@ import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkoutpage/checkout.component';
-import CategoryPage from "./pages/category/category.component";
 
 
 export class App extends Component {
@@ -56,11 +55,10 @@ export class App extends Component {
         <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
-          <Route exact path='/shop' component={ShopPage} />
+          <Route path='/shop' component={ShopPage} />
           <Route exact path='/checkout' component={CheckoutPage} />
           <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
-          {/* <Route path='/shop/:categoryId' component={ CategoryPage } /> */}
-          {/* <Route component={ErrorPage} /> */}
+          <Route component={ErrorPage} />
         </Switch>
 
       </div>
