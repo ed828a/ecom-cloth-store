@@ -8,7 +8,8 @@
   .logo-container {
     height: 100%;
     width: 70px;
-    padding: 25px;
+    padding: 10px;
+    
   }
 
   .options {
@@ -21,6 +22,19 @@
     .option {
       padding: 10px 15px;
       cursor: pointer;
+      text-transform: uppercase;
     }
+
+    // to style <Link> tag which is actually <a> tag.    
+    a { 
+      text-decoration: none;
+      color: black;     
+    }   
+  }
+
+  .username{
+    font-size: 2rem;
+    text-transform: uppercase;
+    margin: auto 0;
   }
 }

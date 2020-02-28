@@ -1,46 +1,36 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import "./checkout-item.scss";
 
-import {
-  clearItemFromCart,
-  addItem,
-  removeItem
-} from '../../redux/cart/cart.actions';
+import React from "react";
+import { clearItem, increase, addItem, decrease } from "../../redux/cart/cart.actions";
+import { connect } from "react-redux";
 
-import './checkout-item.styles.scss';
+function CheckOutItem({ cartItem, clearItem, increaseQuantity, decreaseQuantity }) {
+    const { imageUrl, name, quantity, price } = cartItem;
 
-const CheckoutItem = ({ cartItem, clearItem, addItem, removeItem }) => {
-  const { name, imageUrl, price, quantity } = cartItem;
-  return (
-    <div className='checkout-item'>
-      <div className='image-container'>
-        <img src={imageUrl} alt='item' />
-      </div>
-      <span className='name'>{name}</span>
-      <span className='quantity'>
-        <div className='arrow' onClick={() => removeItem(cartItem)}>
-          &#10094;
+    return (
+        <div className="checkout-item">
+            <div className="image-container">
+                <img src={imageUrl} alt="item" />
+            </div>
+            <span className="name">{name} </span>
+            <span className="quantity">
+                <span className='arrow' onClick={() => decreaseQuantity(cartItem)} >&#10094;</span>
+                <span className='value'>{quantity}</span>
+                <span className='arrow' onClick={ () => increaseQuantity(cartItem) } >&#10095;</span>
+                </span>
+            <span className="price">{price} </span>
+            <span className="remove-button" onClick={() => clearItem(cartItem)}>
+                {" "}
+                &#10005;{" "}
+            </span>
         </div>
-        <span className='value'>{quantity}</span>
-        <div className='arrow' onClick={() => addItem(cartItem)}>
-          &#10095;
-        </div>
-      </span>
-      <span className='price'>{price}</span>
-      <div className='remove-button' onClick={() => clearItem(cartItem)}>
-        &#10005;
-      </div>
-    </div>
-  );
-};
+    );
+}
 
 const mapDispatchToProps = dispatch => ({
-  clearItem: item => dispatch(clearItemFromCart(item)),
-  addItem: item => dispatch(addItem(item)),
-  removeItem: item => dispatch(removeItem(item))
+    clearItem: item => dispatch(clearItem(item)),
+    increaseQuantity: item => dispatch(increase(item)),
+    decreaseQuantity: item => dispatch(decrease(item))
 });
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(CheckoutItem);
+export default connect(null, mapDispatchToProps)(CheckOutItem);
