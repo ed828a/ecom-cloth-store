@@ -1,10 +1,6 @@
-import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+import React, { Component } from 'react';
 
 import './App.css';
-
 import HomePage from './pages/homepage/homepage.component';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import ErrorPage from './pages/errorpage/ErrorPage';
@@ -17,13 +13,6 @@ import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkoutpage/checkout.component';
-
-import Header from './components/header/header.component';
-
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
-
-import { setCurrentUser } from './redux/user/user.actions';
-import { selectCurrentUser } from './redux/user/user.selectors';
 
 export class App extends Component {
 
@@ -85,8 +74,3 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(mapStateToPros, mapDispatchToProps)(App);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App);

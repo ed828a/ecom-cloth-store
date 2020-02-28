@@ -9,7 +9,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-const config = {
+const firebaseConfig  = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
   databaseURL: process.env.REACT_APP_DATA_BASE_URL,
@@ -32,7 +32,7 @@ const config = {
 // };
 
 // userAuth is just the user input in auth.onAuthStateChanged
-export const createUserProfileDocument = async (userAuth, addtionalData) => {
+export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) return; // if user not sign in, exit 
   // console.log('userAuth: ', userAuth);
 
@@ -44,7 +44,7 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     // console.log('firestore return: ', snapShot);
     if (!snapShot.exists) { // this is the standard to create a node in firestore.
       const { displayName, email } = userAuth;
-      const createAt = new Date();
+      const createdAt = new Date();
       await userRef.set({
         displayName,
         email,
