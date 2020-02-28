@@ -23,7 +23,7 @@ function Header({ currentUser, hidden }) {
             </Link>
             <div className="username">
                 {currentUser
-                    ? `${currentUser.displayName} is Cool`
+                    ? currentUser.displayName
                     : "You are not signed in"}{" "}
             </div>
             <div className="options">
