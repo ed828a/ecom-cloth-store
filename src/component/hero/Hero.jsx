@@ -1,8 +1,8 @@
-import './hero.scss';
 import React from "react";
+import { HeroContainer } from "./hero.styles";
 
 const Hero = ({ children, hero }) => (
-    <header className={hero}>{children} </header>
+    <HeroContainer className={hero}>{children} </HeroContainer>
 );
 
 Hero.defaultProps = {

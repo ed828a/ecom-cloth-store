@@ -1,9 +1,12 @@
-import "./sign-in.scss";
-
 import React, { Component } from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import { signInWithGoogle, auth } from "../../firebase/firebase.utils";
+import {
+    SignInContainer,
+    TitleContainer,
+    ButtonsContainer
+} from "./sign-in.styles";
 
 export class SignIn extends Component {
     constructor(props) {
@@ -17,34 +20,31 @@ export class SignIn extends Component {
     }
 
     handleSubmit = async event => {
-
         event.preventDefault();
 
         const { email, password, isSignInClicked } = this.state;
 
-        if(!isSignInClicked) return
+        if (!isSignInClicked) return;
 
         if (password.length < 8) {
             alert("Password must be at least 8 charactors");
             return;
-        } 
-        
+        }
+
         if (!email.includes("@")) {
             alert("Email is invalide");
             return;
         }
 
         try {
-            // const returnObject = 
+            // const returnObject =
             await auth.signInWithEmailAndPassword(email, password);
             // console.log('returnObject: ', returnObject);
 
             this.setState({ email: "", password: "" }); // reset form
-
         } catch (error) {
-            console.error(error);            
+            console.error(error);
         }
-        
     };
 
     handleChange = event => {
@@ -55,8 +55,8 @@ export class SignIn extends Component {
 
     render() {
         return (
-            <div className="sign-in">
-                <h2 className="title">I already have an account</h2>
+            <SignInContainer>
+                <TitleContainer>I already have an account</TitleContainer>
                 <span>Sign in with your email and password</span>
 
                 <form onSubmit={this.handleSubmit}>
@@ -97,7 +97,7 @@ export class SignIn extends Component {
                         required
                     />
                     <label htmlFor="password">password</label> */}
-                    <div className="buttons">
+                    <ButtonsContainer>
                         <CustomButton
                             type="submit"
                             onClick={() =>
@@ -117,9 +117,9 @@ export class SignIn extends Component {
                         >
                             sign in with google
                         </CustomButton>
-                    </div>
+                    </ButtonsContainer>
                 </form>
-            </div>
+            </SignInContainer>
         );
     }
 }

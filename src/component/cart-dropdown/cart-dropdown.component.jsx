@@ -1,28 +1,26 @@
-import "./cart-dropdown.scss";
-
 import React from "react";
-import CustomButton from "../custom-button/custom-button.component";
 import { connect } from "react-redux";
 import CartItem from "../cart-item/cart-item.component";
 import { selectCartItems } from "../../redux/cart/cart.selectors";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom"; // the reason that we use withRouter is because this component and its all parent components are not inside Switch section, not wrapped by Route tag.
 import { toggleCartHidden } from "../../redux/cart/cart.actions";
+import { CartDropdownContainer, CartItemsContainer, GoToCheckoutContainer, EmptyMessageContainer } from "./cart-dropdown.styles";
 
 // const CartDropdown = ({ cartItems, history, toggleCartHidden }) => {
 const CartDropdown = ({ cartItems, history, dispatch }) => {
     return (
-        <div className="cart-dropdown">
-            <div className="cart-items">
+        <CartDropdownContainer>
+            <CartItemsContainer >
                 {cartItems.length ? (
                     cartItems.map(cartItem => (
                         <CartItem key={cartItem.id} item={cartItem} />
                     ))
                 ) : (
-                    <span className="empty-message">your cart is empty</span>
+                    <EmptyMessageContainer className="empty-message">your cart is empty</EmptyMessageContainer>
                 )}
-            </div>
-            <CustomButton
+            </CartItemsContainer>
+            <GoToCheckoutContainer
                 onClick={() => {
                     if (cartItems.length) {
                         dispatch(toggleCartHidden()); // shortcut of dispatch
@@ -33,8 +31,8 @@ const CartDropdown = ({ cartItems, history, dispatch }) => {
                 }}
             >
                 Go to checkout
-            </CustomButton>
-        </div>
+            </GoToCheckoutContainer>
+        </CartDropdownContainer>
     );
 };
 

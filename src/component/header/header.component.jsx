@@ -1,7 +1,4 @@
-import "./header.scss";
-
 import React from "react";
-import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 import { auth } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
@@ -11,39 +8,38 @@ import { selectCurrentUser } from "../../redux/user/user.selectors";
 import { selectCartHidden } from "../../redux/cart/cart.selectors";
 import { createStructuredSelector } from "reselect";
 
+import { HeaderContainer, LogoContainer, OptionsContainer, OptionDiv, OptionLink, UserNameContainer } from './header.styles';
+
 function Header({ currentUser, hidden }) {
-    // console.log("props:", props);
-    // const { currentUser, hidden } = props;
-    // currentUser ? console.log("displayName") : console.log("not sign in");
 
     return (
-        <div className="header">
-            <Link className="logo-container" to="/">
+        <HeaderContainer>
+            <LogoContainer to="/">
                 <Logo className="logo" />
-            </Link>
-            <div className="username">
+            </LogoContainer>
+            <UserNameContainer>
                 {currentUser
                     ? currentUser.displayName
                     : "You are not signed in"}{" "}
-            </div>
-            <div className="options">
-                <Link className="option" to="/shop">
+            </UserNameContainer>
+            <OptionsContainer>
+                <OptionLink to="/shop">
                     Shop
-                </Link>
+                </OptionLink>
                 {currentUser ? (
-                    <div className="option" onClick={() => auth.signOut()}>
+                    <OptionDiv onClick={() => auth.signOut()}>
                         Sign out
-                    </div>
+                    </OptionDiv>
                 ) : (
-                    <Link className="option" to="/signin">
+                    <OptionLink to="/signin">
                         Sign in
-                    </Link>
+                    </OptionLink>
                 )}
 
                 <CartIcon />
-            </div>
+            </OptionsContainer>
             { hidden ? null : <CartDropdown />}
-        </div>
+        </HeaderContainer>
     );
 }
 
