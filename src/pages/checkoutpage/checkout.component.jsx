@@ -6,7 +6,7 @@ import {
 } from "../../redux/cart/cart.selectors";
 import { connect } from "react-redux";
 import CheckOutItem from "../../component/checkout-item/checkout-item.component";
-import { CheckoutPageContainer, CheckoutHeaderContainer, HeaderBlockContainer, TotalContainer, CustomStripeCheckoutButton, TestWarningContainer } from "./checkout.styles";
+import { CheckoutPageContainer, CheckoutHeaderContainer, HeaderBlockContainer, TotalContainer, TestWarningContainer } from "./checkout.styles";
 import StripeCheckoutButton from "../../component/stripe-button/stripe-button.component";
 
 

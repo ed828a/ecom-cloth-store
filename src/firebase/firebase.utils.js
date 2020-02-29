@@ -38,10 +38,18 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
 
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   // console.log('addtionalData: ', addtionalData);
+
+  const collectionRef = firestore.collection('users');
+  console.log('collectionRef: ', collectionRef);
  
   try {
     const snapShot = await userRef.get();
     // console.log('firestore return: ', snapShot);
+
+    const collectionSnapshot = await collectionRef.get();
+    console.log('querySnapshot: ', collectionSnapshot);
+    console.log('collection: ', {collection: collectionSnapshot.docs.map(doc => doc.data())});
+
     if(!snapShot.exists){ // this is the standard to create a node in firestore.
       const { displayName, email} = userAuth;
       const createAt = new Date();
@@ -54,10 +62,13 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     }
   } catch (error) {
     console.log('firestore error when creating user: ', error.message);
+    alert(error.message);
   }
   
   return userRef; // in case we still use the userRef to do other things.
 }
+
+
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig); 

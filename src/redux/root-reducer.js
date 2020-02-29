@@ -11,6 +11,7 @@ const persistConfig = {
     key: 'root',
     storage,
     whitelist: ['cart']
+    // current we just store cart data in local storage.
 }
 
 const rootReducer = combineReducers({
