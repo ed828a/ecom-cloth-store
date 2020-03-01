@@ -35,12 +35,14 @@ const INITIAL_STATE = {
         }
     ]
 }
-
+// because the data is just one-time data, no update or changes, so only default case is enough. 
+// later on, if we add more data dynamically, or more actions, we will add more cases.
 const directoryReducer = (state = INITIAL_STATE, action) => {
     switch(action.type) {
         default:
             return state;
     }
+
 }
 
 export default directoryReducer;

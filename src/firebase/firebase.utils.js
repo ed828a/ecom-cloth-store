@@ -5,8 +5,8 @@
   3. then you can import auth under firebase
   so firebase is the base of firestore and auth.
 */
-import firebase from 'firebase/app';
-import 'firebase/firestore'; 
+import firebase from 'firebase/app'; 
+import 'firebase/firestore';
 import 'firebase/auth';
 
 const firebaseConfig = {
@@ -39,19 +39,19 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
   const userRef = firestore.doc(`users/${userAuth.uid}`);
   // console.log('addtionalData: ', addtionalData);
 
-  const collectionRef = firestore.collection('users');
-  console.log('collectionRef: ', collectionRef);
- 
+  // const collectionRef = firestore.collection('users');
+  // console.log('collectionRef: ', collectionRef);
+
   try {
     const snapShot = await userRef.get();
     // console.log('firestore return: ', snapShot);
 
-    const collectionSnapshot = await collectionRef.get();
-    console.log('querySnapshot: ', collectionSnapshot);
-    console.log('collection: ', {collection: collectionSnapshot.docs.map(doc => doc.data())});
+    // const collectionSnapshot = await collectionRef.get();
+    // console.log('querySnapshot: ', collectionSnapshot);
+    // console.log('collection: ', {collection: collectionSnapshot.docs.map(doc => doc.data())});
 
-    if(!snapShot.exists){ // this is the standard to create a node in firestore.
-      const { displayName, email} = userAuth;
+    if (!snapShot.exists) { // this is the standard to create a node in firestore.
+      const { displayName, email } = userAuth;
       const createAt = new Date();
       await userRef.set({
         displayName,
@@ -64,22 +64,63 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     console.log('firestore error when creating user: ', error.message);
     alert(error.message);
   }
-  
+
   return userRef; // in case we still use the userRef to do other things.
 }
 
+// use this function to initialize firestore(database) with local data
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+  // console.log('collectionRef: ', collectionRef);
 
+  const querySnapshot = await collectionRef.get();
+  // console.log('snapshot Size: ', querySnapshot.size);
+
+  const batch = firestore.batch();
+
+  if (!querySnapshot.size) { // because it's once only operation, store data only when no records on the server
+    objectsToAdd.forEach(obj => {
+      const newDocRef = collectionRef.doc();
+      // Get a DocumentReference for the document within the collection at the specified path. 
+      // If no path is specified, an automatically-generated unique ID will be used for the returned DocumentReference.
+      batch.set(newDocRef, obj);
+    });
+
+  }
+
+  return await batch.commit(); // return a promise
+}
+
+// input is a querySnapshot of firestore collection
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items
+    }
+  });
+
+  console.log('transformedCollection: ', transformedCollection);
+  // convert array to object.
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+}
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig); 
+firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const firestore = firebase.firestore();   // firestore is db in the document reference
 
 // google Authentication 
 const provider = new firebase.auth.GoogleAuthProvider();
 // use google pop-up for sign-in
-provider.setCustomParameters({ prompt: 'select_account' }); 
+provider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;

@@ -9,6 +9,10 @@ import {
 } from "./collection-page.styles";
 
 function CollectionPage({ collection }) {
+    console.log("collectionpage collection: ", collection);
+
+    if (!collection || (Object.keys(collection).length === 0 && collection.constructor === Object)) return null;
+
     const { items, title } = collection;
     // console.log("collection: ", collection);
     return (

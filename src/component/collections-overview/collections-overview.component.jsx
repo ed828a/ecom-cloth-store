@@ -9,7 +9,7 @@ import { CollectionsOverviewContainer } from "./collection-overview.styles";
 
 // Object.keys(An-Object) returns the array of keys of the object
 function CollectionsOverview({ collections }) {
-    console.log('collections.length: ', collections.length);
+    // console.log('collections.length: ', collections.length);
 
     return (
         <CollectionsOverviewContainer className="collections-overview">
