@@ -9,8 +9,20 @@ import {
 } from "../../firebase/firebase.utils";
 import { connect } from "react-redux";
 import { updateCollections } from "../../redux/shop/shop.actions";
+import WithSpinner from "../../component/with-spinner/with-spinner.component";
+
+const CollectionsOverviewWithSpinner = WithSpinner(CollectionsOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
 
 export class ShopPage extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             loading: true
+        }
+    }
+    
     unsubscribeFromSnapshot = null;
 
     componentDidMount() {
@@ -25,6 +37,7 @@ export class ShopPage extends Component {
                 );
                 // console.log('collectionsMap: ', collectionsMap);
                 updateCollections(collectionsMap);
+                this.setState({ loading: false });
             }
         );
     }
@@ -35,18 +48,21 @@ export class ShopPage extends Component {
 
     render() {
         const { match } = this.props;
-
+        const { loading } = this.state;
         return (
             <div className="shop-page">
                 <Route
                     exact
                     path={`${match.path}`}
-                    component={CollectionsOverview}
+                    // component={CollectionsOverview}
+                    render={(props) => <CollectionsOverviewWithSpinner isLoading={loading} {...props} /> }
+                    
                 />
                 <Route
                     exact
                     path={`${match.path}/:collectionId`}
-                    component={CollectionPage}
+                    // component={CollectionPage}
+                    render={props => <CollectionPageWithSpinner isLoading={loading} {...props} />}
                 />
                 <Route
                     path={`${match.path}/:collectionId/*`}

@@ -23,6 +23,6 @@ function MenuItem({ title, imageUrl, size, linkUrl, history, match }) {
             </ContentContainer>
         </MenuItemContainer>
     );
-}
+}  
 
 export default withRouter(MenuItem);
