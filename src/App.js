@@ -32,8 +32,8 @@ export class App extends Component {
         userRef.onSnapshot(snapShot => {
           // console.log('snapshot.data():', snapShot.data());
           setCurrentUser({
-              id: snapShot.id,
-              ...snapShot.data()
+            id: snapShot.id,
+            ...snapShot.data()
           });
         });
       } else {
@@ -41,12 +41,11 @@ export class App extends Component {
         setCurrentUser(userAuth);
       }
 
-      if(!collectionsArray.length){
-        addCollectionAndDocuments('collections', collectionsArray.map(({title, items}) => ({title, items})) );
+      if (!collectionsArray.length) {
+        addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
       }
-      
 
-    });
+    }, error => console.error(error));  // the first function is onNext function, the second function is onError function
   }
 
   componentWillUnmount() {
@@ -72,13 +71,13 @@ export class App extends Component {
   }
 }
 
-const mapStateToPros = createStructuredSelector ({
+const mapStateToPros = createStructuredSelector({
   currentUser: selectCurrentUser,
   collectionsArray: selectCollectionsForPreview
 });
 
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))  
+  setCurrentUser: user => dispatch(setCurrentUser(user))
 });
 
 export default connect(mapStateToPros, mapDispatchToProps)(App);
