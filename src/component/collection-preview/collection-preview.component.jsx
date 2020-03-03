@@ -8,9 +8,9 @@ import {
 import { withRouter } from 'react-router-dom';
 
 function CollectionPreview({ title, items, history, match, routeName }) {
-    console.log('history: ', history);
-    console.log('match: ', match);
-    console.log('routeName: ', routeName);
+    // console.log('history: ', history);
+    // console.log('match: ', match);
+    // console.log('routeName: ', routeName);
     return (
         <CollectionPreviewContainer className="collection-preview">
             <TitleContainer onClick={() => history.push(`${match.url}/${routeName}`)} >{title.toUpperCase()}</TitleContainer>
