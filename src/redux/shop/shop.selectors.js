@@ -31,3 +31,9 @@ export const selectErrorMessage = createSelector(
     [selectShop],
     shop => shop.errorMessage
 );
+
+// !! on any false value (like null, empty string, NaN, zero, undefined, false), it returns the actual boolean value.
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections
+);
