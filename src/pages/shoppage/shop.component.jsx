@@ -9,13 +9,12 @@ import {
  } from "../../redux/shop/shop.actions";
 import CollectionsOverviewContainer from "../../component/collections-overview/collection-overview.container";
 import CollectionPageContainer from "../collectionpage/collection-page.container";
-// import { fetchCollectionsStart } from '../../redux/shop/shop.sagas'
 
 export class ShopPage extends Component {
 
     componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
-        fetchCollectionsStart();
+        const { fetchCollectionsStartAsync } = this.props;
+        fetchCollectionsStartAsync();
     }
 
     componentWillUnmount() {
@@ -55,7 +54,7 @@ export class ShopPage extends Component {
 
 const mapDispatchToProps = dispatch => ({
     // fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
-    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
+    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStart())
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);
