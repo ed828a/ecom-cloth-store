@@ -3,15 +3,19 @@ import { Route } from "react-router-dom";
 import ErrorPage from "../errorpage/ErrorPage";
 
 import { connect } from "react-redux";
-import { fetchCollectionsStartAsync } from "../../redux/shop/shop.actions";
+import { 
+    // fetchCollectionsStartAsync, 
+    fetchCollectionsStart
+ } from "../../redux/shop/shop.actions";
 import CollectionsOverviewContainer from "../../component/collections-overview/collection-overview.container";
 import CollectionPageContainer from "../collectionpage/collection-page.container";
+// import { fetchCollectionsStart } from '../../redux/shop/shop.sagas'
 
 export class ShopPage extends Component {
 
     componentDidMount() {
-        const { fetchCollectionsStartAsync } = this.props;
-        fetchCollectionsStartAsync();
+        const { fetchCollectionsStart } = this.props;
+        fetchCollectionsStart();
     }
 
     componentWillUnmount() {
@@ -50,7 +54,8 @@ export class ShopPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+    // fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync())
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart())
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);
