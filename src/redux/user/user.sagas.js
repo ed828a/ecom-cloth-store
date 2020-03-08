@@ -5,45 +5,70 @@ import UserActionTypes from './user.types';
 import { googleProvider, auth, createUserProfileDocument } from '../../firebase/firebase.utils'
 
 import {
-    googleSignInStart,
-    googleSignInSuccess,
-    googleSignInfailure,
-    emailSignInStart,
-    emailSignInSuccess,
-    emailSignInfailure
+    signInSuccess,
+    signInFailure
 } from './user.action';
 
-export function* signInWithGoogle () {
+export function* getSnapshotFromUserAuth(userAuth) {
+    try {
+        // console.log('user', userAuth);
+        const userRef = yield call(createUserProfileDocument, userAuth);
+        const userSnapshot = yield userRef.get();
+        yield put(signInSuccess({
+            id: userSnapshot.id,
+            ...userSnapshot.data()
+        }));
+        
+        // console.log('user: ', {
+        //     id: userSnapshot.id, 
+        //     ...userSnapshot.data()
+        //  });
+
+    } catch (error) {
+        // console.error(error);
+        yield put(signInFailure(error));
+    }
+}
+
+export function* signInWithGoogle() {
     try {
         const { user } = yield auth.signInWithPopup(googleProvider);
-        // console.log('user', user);
-        const userRef = yield call(createUserProfileDocument, user);
-        const userSnapshot = yield userRef.get();
-        console.log('user: ', {
-            id: userSnapshot.id, 
-            ...userSnapshot.data()
-         });
-        yield put(googleSignInSuccess({
-            id: userSnapshot.id, 
-            ...userSnapshot.data()
-         }));
-         
+        yield getSnapshotFromUserAuth(user);
     } catch (error) {
-        console.error(error);
-        yield put(googleSignInfailure(error));        
+        // console.error(error);
+        yield put(signInFailure(error));
     }
 };
 
 // what we want to do: listen to GOOGLE_SIGN_IN_START and trigger our actual sign from the saga.
-export function* onGoogleSignInStart(){
+export function* onGoogleSignInStart() {
     yield takeLatest(
         UserActionTypes.GOOGLE_SIGN_IN_START,
         signInWithGoogle
     );
 };
 
+// here input is an action object
+export function* signInWithEmail({ payload: { email, password } }) {
+    try {
+        const { user } = yield auth.signInWithEmailAndPassword(email, password);
+        yield getSnapshotFromUserAuth(user);
+    } catch (error) {
+        console.log('error: ', error.message);
+        yield put(signInFailure(error));
+    }
+}
+
+export function* onEmailSignInStart() {
+    yield takeLatest(
+        UserActionTypes.EMAIL_SIGN_IN_START,
+        signInWithEmail
+    )
+}
+
 export function* userSagas() {
     yield all([
-        call(onGoogleSignInStart)
+        call(onGoogleSignInStart),
+        call(onEmailSignInStart)
     ]);
 };

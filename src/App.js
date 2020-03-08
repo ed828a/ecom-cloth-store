@@ -7,9 +7,9 @@ import ErrorPage from './pages/errorpage/ErrorPage';
 import ShopPage from './pages/shoppage/shop.component';
 import Header from './component/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-sign-up.component';
-import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
+// import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
-import { setCurrentUser } from './redux/user/user.action';
+// import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkoutpage/checkout.component';
@@ -18,11 +18,11 @@ import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 export class App extends Component {
 
-  unsubscribeFromAuth = null;
+  // unsubscribeFromAuth = null;
 
-  componentDidMount() {
+  // componentDidMount() {
 
-    const { setCurrentUser, collectionsArray } = this.props;
+    // const { setCurrentUser, collectionsArray } = this.props;
 
     // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
@@ -46,11 +46,11 @@ export class App extends Component {
     //   }
 
     // }, error => console.error(error));  // the first function is onNext function, the second function is onError function
-  }
+  // }
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+  // componentWillUnmount() {
+    // this.unsubscribeFromAuth();
+  // }
 
   render() {
     const { currentUser } = this.props;
@@ -76,9 +76,10 @@ const mapStateToPros = createStructuredSelector({
   collectionsArray: selectCollectionsForPreview
 });
 
-const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
-});
+// const mapDispatchToProps = dispatch => ({
+//   setCurrentUser: user => dispatch(setCurrentUser(user))
+// });
 
-export default connect(mapStateToPros, mapDispatchToProps)(App);
+// export default connect(mapStateToPros, mapDispatchToProps)(App);
+export default connect(mapStateToPros)(App);
 

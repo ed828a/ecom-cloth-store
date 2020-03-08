@@ -28,7 +28,7 @@ function Header({ currentUser, hidden }) {
                 </OptionLink>
                 {currentUser ? (
                     <OptionDiv onClick={() => auth.signOut()}>
-                        Sign out
+                         Sign out                       
                     </OptionDiv>
                 ) : (
                     <OptionLink to="/signin">

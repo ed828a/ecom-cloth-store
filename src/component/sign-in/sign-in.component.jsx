@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-import { signInWithGoogle, auth } from "../../firebase/firebase.utils";
+// import { signInWithGoogle, auth } from "../../firebase/firebase.utils";
 import {
     SignInContainer,
     TitleContainer,
     ButtonsContainer
 } from "./sign-in.styles";
-import { googleSignInStart } from '../../redux/user/user.action';
+import {
+    googleSignInStart,
+    emailSignInStart
+} from "../../redux/user/user.action";
 
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 export class SignIn extends Component {
     constructor(props) {
@@ -39,15 +42,17 @@ export class SignIn extends Component {
             return;
         }
 
-        try {
-            // const returnObject =
-            await auth.signInWithEmailAndPassword(email, password);
-            // console.log('returnObject: ', returnObject);
+        // try {
+        //     // const returnObject =
+        //     await auth.signInWithEmailAndPassword(email, password);
+        //     // console.log('returnObject: ', returnObject);
 
-            this.setState({ email: "", password: "" }); // reset form
-        } catch (error) {
-            console.error(error);
-        }
+        //     this.setState({ email: "", password: "" }); // reset form
+        // } catch (error) {
+        //     console.error(error);
+        // }
+        const { emailSignInStart } = this.props;
+        emailSignInStart(email, password);
     };
 
     handleChange = event => {
@@ -57,7 +62,6 @@ export class SignIn extends Component {
     };
 
     render() {
-
         const { googleSignInStart } = this.props;
 
         return (
@@ -85,24 +89,24 @@ export class SignIn extends Component {
                         label="password"
                         required={this.state.isSignInClicked ? true : false}
                     />
-                    
+
                     <ButtonsContainer>
                         <CustomButton
                             type="submit"
                             onClick={() =>
                                 this.setState({ isSignInClicked: true })
                             }
-                        >
+                          >
                             sign in
                         </CustomButton>
-                            
+
                         <CustomButton
-                        //  because this button is inside the form, the default type is still submit, button type won't submit the form.
-                            type='button'
+                            //  because this button is inside the form, the default type is still submit, button type won't submit the form.
+                            type="button"
                             onClick={() => {
                                 // this.setState({ isSignInClicked: false });
                                 // signInWithGoogle();
-                                googleSignInStart(); 
+                                googleSignInStart();
                             }}
                             isGoogleSignIn
                         >
@@ -116,7 +120,8 @@ export class SignIn extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-    googleSignInStart: () => dispatch(googleSignInStart())
-})
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({ email, password }))
+});
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(null, mapDispatchToProps)(SignIn); 
