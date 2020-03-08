@@ -1,4 +1,4 @@
-import { takeEvery, call, put } from 'redux-saga/effects';
+import { takeLatest, call, put } from 'redux-saga/effects';
 // takeEvery: listening to every action of a specific type that we apss to it.
 // call: what call does is that call is the effect code inside of our generate function that invokes the method. the first parameter is the method name, the second parameter is the input arguments of the method
 // put: is saga effect for creating action, like dispatch, we also need yield on it.
@@ -15,7 +15,7 @@ import {
 import ShopActionTypes from './shop.types';
 
 // first saga code. 
-export function* generatorFetchCollectionsAsync() {
+export function* fetchCollectionsAsync() {
     try {
         const collectionsRef = firestore.collection("collections");
         const snapshot = yield collectionsRef.get();
@@ -35,8 +35,8 @@ export function* generatorFetchCollectionsAsync() {
 //What this saga does with the effect is it's going to pause whenever a specific action type that we want comes in.
 export function* fetchCollectionsStart() {
     // takeEvery takes 2 parameters: first one is the action type, the second one that takes every guess is another generator function name that will run in response to this takeEvery listener. in other words, the second one is the action on the action type.
-    yield takeEvery(
+    yield takeLatest(  // we only want to fire this one time.
         ShopActionTypes.FETCH_COLLECTIONS_START,
-        generatorFetchCollectionsAsync
+        fetchCollectionsAsync
     );
 }
