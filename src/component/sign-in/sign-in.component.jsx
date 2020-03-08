@@ -7,6 +7,9 @@ import {
     TitleContainer,
     ButtonsContainer
 } from "./sign-in.styles";
+import { googleSignInStart } from '../../redux/user/user.action';
+
+import { connect } from 'react-redux';
 
 export class SignIn extends Component {
     constructor(props) {
@@ -54,6 +57,9 @@ export class SignIn extends Component {
     };
 
     render() {
+
+        const { googleSignInStart } = this.props;
+
         return (
             <SignInContainer>
                 <TitleContainer>I already have an account</TitleContainer>
@@ -79,24 +85,7 @@ export class SignIn extends Component {
                         label="password"
                         required={this.state.isSignInClicked ? true : false}
                     />
-                    {/* <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={this.state.email}
-                        onChange={this.handleChange}
-                        required
-                    />
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                        required
-                    />
-                    <label htmlFor="password">password</label> */}
+                    
                     <ButtonsContainer>
                         <CustomButton
                             type="submit"
@@ -106,12 +95,14 @@ export class SignIn extends Component {
                         >
                             sign in
                         </CustomButton>
-
+                            
                         <CustomButton
-                            type="text"
+                        //  because this button is inside the form, the default type is still submit, button type won't submit the form.
+                            type='button'
                             onClick={() => {
-                                this.setState({ isSignInClicked: false });
-                                signInWithGoogle();
+                                // this.setState({ isSignInClicked: false });
+                                // signInWithGoogle();
+                                googleSignInStart(); 
                             }}
                             isGoogleSignIn
                         >
@@ -124,4 +115,8 @@ export class SignIn extends Component {
     }
 }
 
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart())
+})
+
+export default connect(null, mapDispatchToProps)(SignIn);

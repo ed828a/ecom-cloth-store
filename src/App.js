@@ -24,28 +24,28 @@ export class App extends Component {
 
     const { setCurrentUser, collectionsArray } = this.props;
 
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
 
-      if (userAuth) {
-        // store user info in the data base
-        const userRef = await createUserProfileDocument(userAuth);
-        userRef.onSnapshot(snapShot => {
-          // console.log('snapshot.data():', snapShot.data());
-          setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          });
-        });
-      } else {
-        // set currentUser to null
-        setCurrentUser(userAuth);
-      }
+    //   if (userAuth) {
+    //     // store user info in the data base
+    //     const userRef = await createUserProfileDocument(userAuth);
+    //     userRef.onSnapshot(snapShot => {
+    //       // console.log('snapshot.data():', snapShot.data());
+    //       setCurrentUser({
+    //         id: snapShot.id,
+    //         ...snapShot.data()
+    //       });
+    //     });
+    //   } else {
+    //     // set currentUser to null
+    //     setCurrentUser(userAuth);
+    //   }
 
-      if (!collectionsArray.length) {
-        addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
-      }
+    //   if (!collectionsArray.length) {
+    //     addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
+    //   }
 
-    }, error => console.error(error));  // the first function is onNext function, the second function is onError function
+    // }, error => console.error(error));  // the first function is onNext function, the second function is onError function
   }
 
   componentWillUnmount() {
