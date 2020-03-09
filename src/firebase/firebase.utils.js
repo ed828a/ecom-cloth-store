@@ -5,7 +5,7 @@
   3. then you can import auth under firebase
   so firebase is the base of firestore and auth.
 */
-import firebase from 'firebase/app'; 
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
@@ -104,7 +104,7 @@ export const convertCollectionsSnapshotToMap = (collections) => {
   });
 
   // console.log('transformedCollection: ', transformedCollection);
-  
+
   // convert array to object.
   return transformedCollection.reduce((accumulator, collection) => {
     accumulator[collection.title.toLowerCase()] = collection;
@@ -123,5 +123,16 @@ export const googleProvider = new firebase.auth.GoogleAuthProvider();
 // use google pop-up for sign-in
 googleProvider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(googleProvider);
+
+// we are mimicking functionality that you may encounter when you don't have Firebase as the backend.
+export const getCurrentUser = () => {
+  // because we want to return a promise oriented solution that our sagas can yield for. Because sagas is just like async-await work-off of promises.
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged(userAuth => {
+      unsubscribe(); // once we get userAuth, we immediately unsubscribe onAuthStateChanged. 
+      resolve(userAuth);
+    }, reject); // if failed, reject will handle the failure.
+  });
+}
 
 export default firebase;

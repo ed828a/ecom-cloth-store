@@ -2,7 +2,12 @@ import { takeLatest, put, all, call } from 'redux-saga/effects';
 
 import UserActionTypes from './user.types';
 // import { signInWithGoogle } from '../../firebase/firebase.utils'
-import { googleProvider, auth, createUserProfileDocument } from '../../firebase/firebase.utils'
+import {
+    googleProvider,
+    auth,
+    createUserProfileDocument,
+    getCurrentUser
+} from '../../firebase/firebase.utils'
 
 import {
     signInSuccess,
@@ -18,7 +23,7 @@ export function* getSnapshotFromUserAuth(userAuth) {
             id: userSnapshot.id,
             ...userSnapshot.data()
         }));
-        
+
         // console.log('user: ', {
         //     id: userSnapshot.id, 
         //     ...userSnapshot.data()
@@ -66,9 +71,32 @@ export function* onEmailSignInStart() {
     )
 }
 
+
+export function* isUserAuthenticated() {
+    // console.log('isUserAuthenticated() called');
+    try {
+        const userAuth = yield getCurrentUser();
+        // console.log('userAuth: ', userAuth);
+        if(!userAuth) return; 
+        else { yield getSnapshotFromUserAuth(userAuth); }
+
+    } catch (error) {
+        yield put(signInFailure(error));
+    }
+}
+
+export function* onCheckUserSession() {
+    // yield console.log('saga: onCheckUserSession() called');
+    yield takeLatest(
+        UserActionTypes.CHECK_USER_SESSION,
+        isUserAuthenticated
+    )
+}
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStart),
-        call(onEmailSignInStart)
+        call(onEmailSignInStart),
+        call(onCheckUserSession)
     ]);
 };

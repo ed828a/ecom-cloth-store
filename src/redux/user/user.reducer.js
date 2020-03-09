@@ -30,14 +30,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
 
         case UserActionTypes.GOOGLE_SIGN_IN_START:
             return {
-                ...state,
-                
+                ...state,                
             }
 
         case UserActionTypes.EMAIL_SIGN_IN_START:
             return {
                 ...state,
-
             }
 
         default:

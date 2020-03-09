@@ -20,7 +20,7 @@ function Header({ currentUser, hidden }) {
             <UserNameContainer>
                 {currentUser
                     ? currentUser.displayName
-                    : "You are not signed in"}{" "}
+                    : "You are not signed in"}
             </UserNameContainer>
             <OptionsContainer>
                 <OptionLink to="/shop">
