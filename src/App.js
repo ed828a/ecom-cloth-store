@@ -22,32 +22,6 @@ export class App extends Component {
   // unsubscribeFromAuth = null;
 
   componentDidMount() {
-
-    // const { setCurrentUser, collectionsArray } = this.props;
-
-    // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-
-    //   if (userAuth) {
-    //     // store user info in the data base
-    //     const userRef = await createUserProfileDocument(userAuth);
-    //     userRef.onSnapshot(snapShot => {
-    //       // console.log('snapshot.data():', snapShot.data());
-    //       setCurrentUser({
-    //         id: snapShot.id,
-    //         ...snapShot.data()
-    //       });
-    //     });
-    //   } else {
-    //     // set currentUser to null
-    //     setCurrentUser(userAuth);
-    //   }
-
-    //   if (!collectionsArray.length) {
-    //     addCollectionAndDocuments('collections', collectionsArray.map(({ title, items }) => ({ title, items })));
-    //   }
-
-    // }, error => console.error(error));  // the first function is onNext function, the second function is onError function
-
     const { checkUserSession } = this.props;
     checkUserSession();
   }
@@ -81,7 +55,7 @@ const mapStateToPros = createStructuredSelector({
 });
 
 const mapDispatchToProps = dispatch => ({
-  checkUserSession: () => dispatch(checkUserSession())
+  checkUserSession: () => dispatch(checkUserSession()),
 });
 
 export default connect(mapStateToPros, mapDispatchToProps)(App);

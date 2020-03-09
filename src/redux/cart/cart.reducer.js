@@ -41,6 +41,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
             }
 
         case CLEAR_ALL:
+        case CartActionTypes.CLEAR_CART:
             return INITIAL_STATE
 
         default:

@@ -40,3 +40,5 @@ export function* fetchCollectionsStart() {
         fetchCollectionsAsync
     );
 }
+
+// this module also can have a sub root sagas function like those in user.sagas.js and cart.sagas.js. But because only one saga listening function to be used, no need to write the sub root sagas function.
