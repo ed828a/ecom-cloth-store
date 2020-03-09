@@ -1,7 +1,6 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
-// import { signInWithGoogle, auth } from "../../firebase/firebase.utils";
 import {
     SignInContainer,
     TitleContainer,
@@ -14,21 +13,15 @@ import {
 
 import { connect } from "react-redux";
 
-export class SignIn extends Component {
-    constructor(props) {
-        super(props);
+export const SignIn = props => {
+    // const [email, setEmail] = useState("");
+    // const [password, setPassword] = useState("");
+    const [userCredentials, setUserCredentials] = useState({email: '', password: ''});
+    const [isSignInClicked, setIsSignInClicked] = useState(false);
+    const {email, password} = userCredentials;
 
-        this.state = {
-            email: "",
-            password: "",
-            isSignInClicked: false
-        };
-    }
-
-    handleSubmit = async event => {
+    const handleSubmit = async event => {
         event.preventDefault();
-
-        const { email, password, isSignInClicked } = this.state;
 
         if (!isSignInClicked) return;
 
@@ -42,86 +35,73 @@ export class SignIn extends Component {
             return;
         }
 
-        // try {
-        //     // const returnObject =
-        //     await auth.signInWithEmailAndPassword(email, password);
-        //     // console.log('returnObject: ', returnObject);
-
-        //     this.setState({ email: "", password: "" }); // reset form
-        // } catch (error) {
-        //     console.error(error);
-        // }
-        const { emailSignInStart } = this.props;
+        const { emailSignInStart } = props;
         emailSignInStart(email, password);
     };
 
-    handleChange = event => {
+    const handleChange = event => {
         const { name, value } = event.target;
 
-        this.setState({ [name]: value });
+        setUserCredentials({...userCredentials, [name]: value});
+
     };
 
-    render() {
-        const { googleSignInStart } = this.props;
+    const { googleSignInStart } = props;
 
-        return (
-            <SignInContainer>
-                <TitleContainer>I already have an account</TitleContainer>
-                <span>Sign in with your email and password</span>
+    return (
+        <SignInContainer>
+            <TitleContainer>I already have an account</TitleContainer>
+            <span>Sign in with your email and password</span>
 
-                <form onSubmit={this.handleSubmit}>
-                    <FormInput
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={this.state.email}
-                        onChange={this.handleChange}
-                        label="email"
-                        required={this.state.isSignInClicked ? true : false}
-                    />
+            <form onSubmit={handleSubmit}>
+                <FormInput
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={email}
+                    onChange={handleChange}
+                    label="email"
+                    required={isSignInClicked ? true : false}
+                />
 
-                    <FormInput
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={this.state.password}
-                        onChange={this.handleChange}
-                        label="password"
-                        required={this.state.isSignInClicked ? true : false}
-                    />
+                <FormInput
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={password}
+                    onChange={handleChange}
+                    label="password"
+                    required={isSignInClicked ? true : false}
+                />
 
-                    <ButtonsContainer>
-                        <CustomButton
-                            type="submit"
-                            onClick={() =>
-                                this.setState({ isSignInClicked: true })
-                            }
-                          >
-                            sign in
-                        </CustomButton>
+                <ButtonsContainer>
+                    <CustomButton
+                        type="submit"
+                        onClick={() => setIsSignInClicked(true)}
+                    >
+                        sign in
+                    </CustomButton>
 
-                        <CustomButton
-                            //  because this button is inside the form, the default type is still submit, button type won't submit the form.
-                            type="button"
-                            onClick={() => {
-                                // this.setState({ isSignInClicked: false });
-                                // signInWithGoogle();
-                                googleSignInStart();
-                            }}
-                            isGoogleSignIn
-                        >
-                            sign in with google
-                        </CustomButton>
-                    </ButtonsContainer>
-                </form>
-            </SignInContainer>
-        );
-    }
-}
+                    <CustomButton
+                        //  because this button is inside the form, the default type is still submit, button type won't submit the form.
+                        type="button"
+                        onClick={() => {
+                            googleSignInStart();
+                        }}
+                        isGoogleSignIn
+                    >
+                        sign in with google
+                    </CustomButton>
+                </ButtonsContainer>
+            </form>
+        </SignInContainer>
+    );
+};
 
 const mapDispatchToProps = dispatch => ({
     googleSignInStart: () => dispatch(googleSignInStart()),
-    emailSignInStart: (email, password) => dispatch(emailSignInStart({ email, password }))
+    emailSignInStart: (email, password) =>
+        dispatch(emailSignInStart({ email, password }))
 });
 
-export default connect(null, mapDispatchToProps)(SignIn); 
+export default connect(null, mapDispatchToProps)(SignIn);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect } from 'react'
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
@@ -7,9 +7,7 @@ import ErrorPage from './pages/errorpage/ErrorPage';
 import ShopPage from './pages/shoppage/shop.component';
 import Header from './component/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-sign-up.component';
-// import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
 import { connect } from 'react-redux';
-// import { setCurrentUser } from './redux/user/user.action';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
 import CheckoutPage from './pages/checkoutpage/checkout.component';
@@ -17,36 +15,24 @@ import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from './redux/user/user.action';
 
 
-export class App extends Component {
+export const App = ({ currentUser, checkUserSession }) => {
 
-  // unsubscribeFromAuth = null;
+  useEffect(() => { checkUserSession(); }, [checkUserSession]);
 
-  componentDidMount() {
-    const { checkUserSession } = this.props;
-    checkUserSession();
-  }
+  return (
+    <div className="App">
+      <Header />
+      <Switch>
+        <Route exact path='/' component={HomePage} />
+        <Route path='/shop' component={ShopPage} />
+        <Route exact path='/checkout' component={CheckoutPage} />
+        <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
+        <Route component={ErrorPage} />
+      </Switch>
 
-  componentWillUnmount() {
-    // this.unsubscribeFromAuth();
-  }
+    </div>
+  )
 
-  render() {
-    const { currentUser } = this.props;
-
-    return (
-      <div className="App">
-        <Header />
-        <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route exact path='/checkout' component={CheckoutPage} />
-          <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
-          <Route component={ErrorPage} />
-        </Switch>
-
-      </div>
-    )
-  }
 }
 
 const mapStateToPros = createStructuredSelector({
