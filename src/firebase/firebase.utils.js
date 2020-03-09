@@ -51,7 +51,9 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
     // console.log('collection: ', {collection: collectionSnapshot.docs.map(doc => doc.data())});
 
     if (!snapShot.exists) { // this is the standard to create a node in firestore.
-      const { displayName, email } = userAuth;
+      // if userAuth from firebase.auth().createUserWithEmailAndPassword(), displayName is null. if addtionalData has displayName, it will override the field. if from GoogleAccount, it has value.
+      const { displayName, email } = userAuth; 
+      console.log('displayName from userAuth: ', displayName);
       const createAt = new Date();
       await userRef.set({
         displayName,

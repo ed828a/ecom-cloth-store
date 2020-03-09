@@ -42,14 +42,16 @@ export const signOutFailure = (error) => ({
     payload: error
 });
 
-export const signUpStart = (displayName_email_password) => ({
+export const signUpStart = (userCredentials) => ({
     type: UserActionTypes.SIGN_UP_START,
-    payload: displayName_email_password
+    payload: userCredentials
 });
 
-export const signUpSuccess = user => ({
+export const signUpSuccess = ({ user, addtionalData }) => ({
     type: UserActionTypes.SIGN_UP_SUCCESS,
-    payload: user
+    payload: { user, addtionalData }
+    // user here stores userAuth object, not user data as others
+    // only for sagas to handle this action, reducer doesn't do any thing.
 })
 
 export const signUpFailure = error => ({

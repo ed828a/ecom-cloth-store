@@ -18,10 +18,14 @@ import {
     signUpSuccess
 } from './user.action';
 
-export function* getSnapshotFromUserAuth(userAuth) {
+export function* getSnapshotFromUserAuth(userAuth, addtionalData) {
     try {
         // console.log('user', userAuth);
-        const userRef = yield call(createUserProfileDocument, userAuth);
+        const userRef = yield call(
+            createUserProfileDocument,
+            userAuth,
+            addtionalData
+        );
         const userSnapshot = yield userRef.get();
         yield put(signInSuccess({
             id: userSnapshot.id,
@@ -113,16 +117,20 @@ export function* onSignOutStart() {
     )
 };
 
-export function* doSignUpStart({payload: { email, password, displayName }}) {
+export function* signUp({ payload: { email, password, displayName } }) {
     try {
-        // { user } only, not userAuth
+        // { user } only, not userAuth even it's userAuth object
         const { user } = yield auth.createUserWithEmailAndPassword(email, password);
-        const userRef = yield createUserProfileDocument(user, { displayName });
-        const userSnapshot = yield userRef.get();
-        yield put(signUpSuccess({
-            id: userSnapshot.id,
-            ...userSnapshot.data()
-        }));
+
+        console.log('user from Create..:', user);
+        yield put(signUpSuccess({ user, addtionalData: { displayName } }));
+
+        // const userRef = yield createUserProfileDocument(user, { displayName });
+        // const userSnapshot = yield userRef.get();
+        // yield put(signUpSuccess({
+        //     id: userSnapshot.id,
+        //     ...userSnapshot.data()
+        // }));
 
     } catch (error) {
         console.log('error: ', error);
@@ -133,11 +141,21 @@ export function* doSignUpStart({payload: { email, password, displayName }}) {
 export function* onSignUpStart() {
     yield takeLatest(
         UserActionTypes.SIGN_UP_START,
-        doSignUpStart
+        signUp
     )
+};
+
+export function* signInAfterSignUp({ payload: { user, addtionalData } }) {
+    yield getSnapshotFromUserAuth(user, addtionalData);
+
 }
 
-
+export function* onSignUpSuccess() {
+    yield takeLatest(
+        UserActionTypes.SIGN_UP_SUCCESS,
+        signInAfterSignUp
+    )
+};
 
 export function* userSagas() {
     yield all([
@@ -145,7 +163,8 @@ export function* userSagas() {
         call(onEmailSignInStart),
         call(onCheckUserSession),
         call(onSignOutStart),
-        call(onSignUpStart)
+        call(onSignUpStart),
+        call(onSignUpSuccess)
     ]);
 };
 
