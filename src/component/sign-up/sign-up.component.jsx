@@ -3,6 +3,8 @@ import FormInput from "../form-input/form-input.component";
 import CustomButton from "../custom-button/custom-button.component";
 import { auth, createUserProfileDocument } from "../../firebase/firebase.utils";
 import { SignUpContainer, SignupTitleContainer } from "./sign-up.styles";
+import { signUpStart } from '../../redux/user/user.action';
+import { connect } from "react-redux";
 
 export class SignUp extends Component {
     constructor(props) {
@@ -37,29 +39,31 @@ export class SignUp extends Component {
             return;
         }
 
-        try {
-            // get userAuth from auth.createUserWithEmailAndPassword
-            // becareful, {user} only, can't be any others
-            const { user } = await auth.createUserWithEmailAndPassword(
-                email,
-                password
-            );
-            // console.log("userAuth from SignUp:", user);
+        const { signUpStart } = this.props;
+        signUpStart( email, password, displayName );
+        // try {
+        //     // get userAuth from auth.createUserWithEmailAndPassword
+        //     // becareful, {user} only, can't be any others
+        //     const { user } = await auth.createUserWithEmailAndPassword(
+        //         email,
+        //         password
+        //     );
+        //     // console.log("userAuth from SignUp:", user);
 
-            await createUserProfileDocument(user, { displayName });
+        //     await createUserProfileDocument(user, { displayName });
 
-            // reset state so clear the form
-            this.setState({
-                displayName: "",
-                email: "",
-                password: "",
-                confirmPassword: ""
-            });
+        //     // reset state so clear the form
+        //     this.setState({
+        //         displayName: "",
+        //         email: "",
+        //         password: "",
+        //         confirmPassword: ""
+        //     });
 
-        } catch (error) {
-            console.error(error);
-            alert(error.message);
-        }
+        // } catch (error) {
+        //     console.error(error);
+        //     alert(error.message);
+        // }
     };
 
     handleChange = event => {
@@ -121,4 +125,8 @@ export class SignUp extends Component {
     }
 }
 
-export default SignUp;
+const mapDispatchToProps = dispatch => ({
+    signUpStart: ( email, password, displayName ) => dispatch(signUpStart({ email, password, displayName }))
+})
+
+export default connect(null, mapDispatchToProps)(SignUp);
