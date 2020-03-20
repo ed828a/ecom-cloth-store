@@ -21,6 +21,7 @@ function CollectionPreview({ title, items, history, match, routeName }) {
                         <CollectionItem key={item.id} item={item} />
                     ))}
             </PreviewContainer>
+            <TitleContainer onClick={() => history.push(`${match.url}/${routeName}`)} >&#8230;</TitleContainer>
         </CollectionPreviewContainer>
     );
 }

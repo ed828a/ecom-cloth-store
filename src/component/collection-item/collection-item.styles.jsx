@@ -19,6 +19,10 @@ export const CollectionItemContainer = styled.div`
             opacity: 0.85;
         }
     }
+
+    @media screen and (max-width: 500px) {
+        width: 90vw;
+    }
 `;
 
 export const CollectionItemImage = styled.div`
@@ -45,6 +49,10 @@ export const AddToCartButtonContainer = styled(CustomButton)`
     position: absolute;
     top: 250px;
     display: none;
+    @media screen and (max-width: 500px) {
+        display: block;
+        width: 50%;
+    }
 `;
 
 export const NameContainer = styled.span`
