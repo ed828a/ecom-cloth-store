@@ -25,9 +25,10 @@ export const LogoContainer = styled(Link)`
 `;
 
 export const UserNameContainer = styled.div`
-    font-size: 2rem;
+    font-size: 1rem;
     text-transform: uppercase;
     margin: auto 0;
+    font-weight: bold;
 
     @media screen and (max-width: 500px) {
         font-size: 0.5rem;
