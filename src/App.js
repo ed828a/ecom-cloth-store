@@ -29,20 +29,19 @@ export const App = ({ currentUser, checkUserSession }) => {
 
   return (
     <div className="App">
-        <GlobalStyle />
-        <Header />
-        <Switch>
-        <ErrorBoundary>
-          <Suspense fallback={<Spinner />} >
+      <GlobalStyle />
+      <Header />
+      <ErrorBoundary>
+        <Suspense fallback={<Spinner />} >
+          <Switch>
             <Route exact path='/' component={HomePage} />
             <Route path='/shop' component={ShopPage} />
             <Route exact path='/checkout' component={CheckoutPage} />
             <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
-          </Suspense>
-          <Route component={ErrorPage} />
-        </ErrorBoundary>
-      </Switch>
-
+            <Route component={ErrorPage} />
+          </Switch>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   )
 
