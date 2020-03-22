@@ -5,6 +5,7 @@ import { HomePageContainer } from './homepage.styles';
 
 
 function HomePage() {
+    // throw Error;
     return (
         <HomePageContainer className='homepage'>
             <Directory />

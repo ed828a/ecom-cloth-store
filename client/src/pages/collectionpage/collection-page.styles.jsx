@@ -18,4 +18,9 @@ export const CollectionContainer = styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 10px;
+
+    @media screen and (max-width: 500px) {
+        grid-template-columns: 1fr;
+        margin: 0 auto;
+    }
 `;

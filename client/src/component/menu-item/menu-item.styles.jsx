@@ -35,6 +35,12 @@ export const MenuItemContainer = styled.div`
             opacity: 0.9;
         }
     }
+
+    @media screen and (max-width: 500px) {
+        &.large {
+            height: 240px;
+        }
+    }
 `;
 
 export const BackgroundImage = styled.div`
