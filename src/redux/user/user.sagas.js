@@ -6,7 +6,8 @@ import {
     googleProvider,
     auth,
     createUserProfileDocument,
-    getCurrentUser
+    getCurrentUser,
+    updateCurrentUserCartItems
 } from '../../firebase/firebase.utils'
 
 import {
@@ -31,7 +32,8 @@ export function* getSnapshotFromUserAuth(userAuth, addtionalData) {
             id: userSnapshot.id,
             ...userSnapshot.data()
         }));
-
+        console.log('userSnapshot.id = ', userSnapshot.id);
+        console.log('userAuth.uid = ', userAuth.uid);
         // console.log('user: ', {
         //     id: userSnapshot.id, 
         //     ...userSnapshot.data()
@@ -101,8 +103,9 @@ export function* onCheckUserSession() {
     )
 };
 
-export function* signOut() {
+export function* signOut({payload: { uid, cartItems }}) {
     try {
+        updateCurrentUserCartItems({uid, cartItems});
         yield auth.signOut();
         yield put(signOutSuccess());
     } catch (error) {

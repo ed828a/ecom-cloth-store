@@ -59,6 +59,7 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
         displayName,
         email,
         createAt,
+        cartItems: [],
         ...addtionalData
       });
     }
@@ -68,7 +69,32 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
   }
 
   return userRef; // in case we still use the userRef to do other things.
-}
+};
+
+export const updateCurrentUserCartItems = async ({uid, cartItems}) => {
+  try {
+    const userRef = firestore.doc(`users/${uid}`);
+    const snapShot = await userRef.get();
+    // const newDocObj = {
+    //   ...snapShot.data(),
+    //   cartItems: [...cartItems]
+    // };
+
+    // console.log(' newDocObj = ', newDocObj);
+
+    if (snapShot.exists){
+      await userRef.set({
+        ...snapShot.data(),
+        cartItems: [...cartItems]
+      });
+    }
+
+  } catch (error) {
+    console.log('firestore error when updating user\'s cartItems: ', error.message);
+    alert(error.message);
+
+  }
+};
 
 // use this function to initialize firestore(database) with local data
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {

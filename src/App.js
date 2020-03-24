@@ -1,16 +1,11 @@
 import React, { useEffect, lazy, Suspense } from 'react'
-// import './App.css';
 
-// import HomePage from './pages/homepage/homepage.component';
 import { Route, Switch, Redirect } from 'react-router-dom'
 import ErrorPage from './pages/errorpage/ErrorPage';
-// import ShopPage from './pages/shoppage/shop.component';
 import Header from './component/header/header.component';
-// import SignInAndSignUpPage from './pages/sign-in-and-sign-up-page/sign-in-and-sign-up.component';
 import { connect } from 'react-redux';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { createStructuredSelector } from 'reselect';
-// import CheckoutPage from './pages/checkoutpage/checkout.component';
 import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 import { checkUserSession } from './redux/user/user.action';
 import Spinner from './component/spinner/spinner.component';
