@@ -44,6 +44,12 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         case CartActionTypes.CLEAR_CART:
             return INITIAL_STATE
 
+        case CartActionTypes.SIGN_IN_SUCCESS:
+            return {
+                ...state,
+                cartItems: action.payload.cartItems
+            }
+        
         default:
             return state;
     }

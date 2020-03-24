@@ -52,13 +52,15 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
 
     if (!snapShot.exists) { // this is the standard to create a node in firestore.
       // if userAuth from firebase.auth().createUserWithEmailAndPassword(), displayName is null. if addtionalData has displayName, it will override the field. if from GoogleAccount, it has value.
-      const { displayName, email } = userAuth; 
+      const { displayName, email } = userAuth;
       console.log('displayName from userAuth: ', displayName);
       const createAt = new Date();
       await userRef.set({
         displayName,
         email,
         createAt,
+        cartItems: [],
+        uid: userAuth.uid,
         ...addtionalData
       });
     }
@@ -68,6 +70,23 @@ export const createUserProfileDocument = async (userAuth, addtionalData) => {
   }
 
   return userRef; // in case we still use the userRef to do other things.
+}
+
+export const updateCurrentUserCartItems = async ( {uid, cartItems} ) => {
+  try {
+    const userRef = await firestore.doc(`users/${uid}`);
+
+    const snapShot = await userRef.get();
+    await userRef.set({
+      ...snapShot,
+      cartItems: [...cartItems]
+    });
+
+  } catch (error) {
+    console.log("firestore error when updating user's cart items: ", error.message);
+    alert(error.message);
+  }
+
 }
 
 // use this function to initialize firestore(database) with local data
@@ -80,7 +99,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 
   const batch = firestore.batch();
 
-  if (!querySnapshot.size) { // because it's once only operation, store data only when no records on the server
+  if (!querySnapshot.size) { // make sure that it stores data only once; it stores data only when no records on the server
     objectsToAdd.forEach(obj => {
       const newDocRef = collectionRef.doc();
       // Get a DocumentReference for the document within the collection at the specified path. 

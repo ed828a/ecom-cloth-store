@@ -35,6 +35,14 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 error: null
             }
 
+        case UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS:
+            return {
+                ...state,
+                currentUser: {
+                    ...state.currentUser, 
+                    cartItem: [...action.payload]
+                }
+            }
         default:
             return state;
     }

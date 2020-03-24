@@ -6,5 +6,6 @@ export const CartActionTypes = {
     INCREASE: 'INCREASE',
     DECREASE: 'DECREASE',
     CLEAR_ALL: 'CLEAR_ALL',
-    CLEAR_CART: 'CLEAR_CART'
+    CLEAR_CART: 'CLEAR_CART',
+    SIGN_IN_SUCCESS: 'SIGN_IN_SUCCESS'
 }

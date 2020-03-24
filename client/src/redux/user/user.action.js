@@ -6,6 +6,11 @@ export const setCurrentUser = user => ({
     payload: user
 });
 
+export const updateCurrentUserCartItems = cartItems => ({
+    type: UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS,
+    payload: cartItems
+})
+
 export const googleSignInStart = () => ({
     type: UserActionTypes.GOOGLE_SIGN_IN_START
 });
@@ -29,8 +34,9 @@ export const checkUserSession = () => ({
     type: UserActionTypes.CHECK_USER_SESSION
 });
 
-export const signOutStart = () => ({
-    type: UserActionTypes.SIGN_OUT_START
+export const signOutStart = ({uid, cartItems}) => ({
+    type: UserActionTypes.SIGN_OUT_START,
+    payload: {uid, cartItems}
 });
 
 export const signOutSuccess = () => ({

@@ -6,7 +6,8 @@ import {
     googleProvider,
     auth,
     createUserProfileDocument,
-    getCurrentUser
+    getCurrentUser,
+    updateCurrentUserCartItems
 } from '../../firebase/firebase.utils'
 
 import {
@@ -101,8 +102,9 @@ export function* onCheckUserSession() {
     )
 };
 
-export function* signOut() {
+export function* signOut({payload: { uid, cartItems }}) {
     try {
+        yield updateCurrentUserCartItems({ uid, cartItems });
         yield auth.signOut();
         yield put(signOutSuccess());
     } catch (error) {
