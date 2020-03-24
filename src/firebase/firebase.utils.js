@@ -75,13 +75,7 @@ export const updateCurrentUserCartItems = async ({uid, cartItems}) => {
   try {
     const userRef = firestore.doc(`users/${uid}`);
     const snapShot = await userRef.get();
-    // const newDocObj = {
-    //   ...snapShot.data(),
-    //   cartItems: [...cartItems]
-    // };
-
-    // console.log(' newDocObj = ', newDocObj);
-
+ 
     if (snapShot.exists){
       await userRef.set({
         ...snapShot.data(),

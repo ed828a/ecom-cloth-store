@@ -6,6 +6,16 @@ export const setCurrentUser = user => ({
     payload: user
 });
 
+export const updateCurrentUserCartItems = cartItems => ({
+    type: UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS,
+    payload: cartItems
+})
+
+export const updateCurrentUserCartItemsFailure = error => ({
+    type: UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS,
+    payload: error
+})
+
 export const googleSignInStart = () => ({
     type: UserActionTypes.GOOGLE_SIGN_IN_START
 });

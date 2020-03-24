@@ -16,7 +16,8 @@ import {
     signOutSuccess,
     signOutFailure,
     signUpFailure,
-    signUpSuccess
+    signUpSuccess,
+    updateCurrentUserCartItemsFailure
 } from './user.action';
 
 export function* getSnapshotFromUserAuth(userAuth, addtionalData) {
@@ -109,7 +110,7 @@ export function* signOut({payload: { uid, cartItems }}) {
         yield auth.signOut();
         yield put(signOutSuccess());
     } catch (error) {
-        yield put(signOutFailure());
+        yield put(signOutFailure(error));
     }
 };
 
@@ -160,6 +161,21 @@ export function* onSignUpSuccess() {
     )
 };
 
+export function* updateCurrentUserCartItemsInFirebase({payload: {uid, cartItems }}){
+    try {
+        yield updateCurrentUserCartItems({uid, cartItems});
+    } catch (error) {
+        yield put(updateCurrentUserCartItemsFailure(error));
+    }
+};
+
+export function* onUpdateCurrentUserCartItems(){
+    yield takeLatest(
+        UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS,
+        updateCurrentUserCartItemsInFirebase
+    )
+};
+
 export function* userSagas() {
     yield all([
         call(onGoogleSignInStart),
@@ -167,7 +183,8 @@ export function* userSagas() {
         call(onCheckUserSession),
         call(onSignOutStart),
         call(onSignUpStart),
-        call(onSignUpSuccess)
+        call(onSignUpSuccess),
+        call(onUpdateCurrentUserCartItems)
     ]);
 };
 

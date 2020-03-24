@@ -23,6 +23,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         case UserActionTypes.SIGN_IN_FAILURE:
         case UserActionTypes.SIGN_OUT_FAILURE:
         case UserActionTypes.SIGN_UP_FAILURE:
+        case UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS_FAILURE:
             return {
                 ...state,
                 error: action.payload
@@ -33,6 +34,12 @@ const userReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 currentUser: null,
                 error: null
+            }
+
+        case UserActionTypes.UPDATE_CURRENT_USER_CART_ITEMS:
+            return {
+                ...state,
+                currentUser: { ...state.currentUser, cartItems: action.payload }
             }
 
         default:
